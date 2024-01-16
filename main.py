@@ -2,8 +2,16 @@
 #Start date: January 8th 2024
 #Project name: FunkyCam
 
-#importing the opencv library
-import cv2 
+#All comments are written by me to document this project 
+#so that if I ever come back to it I know what every line does
+
+#importing the libraries
+import cv2
+import sys
+
+#creating a face cascade
+cascadePath = sys.argv[1]
+faceCascade = cv2.CascadeClassifier(cascadePath)
 
 #Loading camera, the int is the id of the device to open if there are multiple
 cap = cv2.VideoCapture(0)
@@ -17,14 +25,31 @@ while  True:
     #retreiving camera data
     success, frame = cap.read()
 
-   
-    
-    #If the video frame has been captured open the camera window
+   #If the video frame has been captured open the camera window
     if success:
-       
-       cv2.imshow("Funky Cam", frame)
+        
 
-    
+        #This is what deals with the face detection stuff
+        #First this converts the input from rgb to grayscale and puts the image in gray
+        #gray images are better for face detection sicne they simplify the image and reduce computational load
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.cv.CV_HAAR_SCALE_IMAGE
+        )
+
+        # Draw a rectangle around the faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        
+        #displaying frame
+            cv2.imshow("Funky Cam", frame)
+
     # Close and break the loop after pressing "x" key, or after clicking x on the window
     if (cv2.waitKey(1) and 0xFF == ord('x')):
         break
