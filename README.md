@@ -9,7 +9,7 @@ I need to figure out how to make these libraries independant from the user, they
 As an artist, I decided to stay anonymous and cover my facem in the same fashion as artists like Daft Punk. Editing takes a lot of time, so I got inspired from instagram filters to try and recreate that tracking technology on Python, so that it automatically puts your brand face on yours. In my case it is a star, and for Marshmallow for example, well it is a marshmallow. The app will detect the different expressions of your face and put the right image for it. For example, if I smile it will put the image of the star that is smiling. It is early in developement as I am currently learning how to use the OpenCV library, which is pretty dense. 
 ## Challenges
 
-These are some of the challenges I am facacing right now, I will update this document whenever I digure out a solution to them and mark them as fixed
+These are some of the challenges I am facacing right now, I will update this document whenever I figure out a solution to them and mark them as fixed
 
 - I knew nothing about image procesing going in, I am learning how to use the opencv library and documenting what I learn as I am going through it. I am continuously learning about it online and it is very interesting!
 - Documentation takes some time but it is worth it so that it is easy to go back to and saves more time since I won't need to relearn the code I wrote
