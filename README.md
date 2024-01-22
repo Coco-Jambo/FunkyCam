@@ -25,3 +25,4 @@ These are some of the challenges I am facacing right now, I will update this doc
 - A website to showcase the app
 - Making the UI
 - Making it usable by other people too, right now I am using it with the Funky Jambo faces, but I want to make it so that it's easy for other artists to upload their own images for different expressions
+- Have profiles, kind of like what apple's gallery app does so that different people can have different profiles and faces
