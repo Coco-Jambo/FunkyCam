@@ -13,12 +13,19 @@ import numpy as np
 #creating a face cascade
 faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
+#creating an eye cascade
+eyeCascade = cv2.CascadeClassifier('eye.xml')
+
+#creating a mouth cascade
+eyeCascade = cv2.CascadeClassifier('mouth.xml')
+
+
 #Loading funky assets
 #cv2.IMREAD_UNCHANGED specifies that the image should be read as is, including an alpha channel if present (if there's transparency)
 basic_expression = cv2.imread('assets/SMILE PNG.png', cv2.IMREAD_UNCHANGED)
 
 #the ratio is used when resizing the image (width/height)
-ratio = basic_expression.shape[1]/basic_expression.shape[0]
+#ratio = basic_expression.shape[1]/basic_expression.shape[0]
 
 #Loading camera, the int is the id of the device to open if there are multiple
 cap = cv2.VideoCapture(0)
