@@ -11,13 +11,13 @@ import sys
 import numpy as np
 
 #creating a face cascade
-faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier('xml/haarcascade_frontalface_default.xml')
 
 #creating an eye cascade
-eyeCascade = cv2.CascadeClassifier('eye.xml')
+#eyeCascade = cv2.CascadeClassifier('xml/eyes.xml')
 
 #creating a mouth cascade
-eyeCascade = cv2.CascadeClassifier('mouth.xml')
+#mouthCascade = cv2.CascadeClassifier('xml/mouth.xml')
 
 
 #Loading funky assets
@@ -25,7 +25,7 @@ eyeCascade = cv2.CascadeClassifier('mouth.xml')
 basic_expression = cv2.imread('assets/SMILE PNG.png', cv2.IMREAD_UNCHANGED)
 
 #the ratio is used when resizing the image (width/height)
-#ratio = basic_expression.shape[1]/basic_expression.shape[0]
+ratio = basic_expression.shape[1]/basic_expression.shape[0]
 
 #Loading camera, the int is the id of the device to open if there are multiple
 cap = cv2.VideoCapture(0)
@@ -69,7 +69,42 @@ while  success:
     # 2 is the thickness of the border
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    
+
+
+    #Putting the image on the detected face
+    for (x, y, w, h) in faces:
+        
+        # Resizing the image
+        h = int(w / ratio)
+        y += int(h / 2)
+        smallerImage = cv2.resize(basic_expression, (w, h))
+
+        # Extract the region where the image will be overlaid
+        region_extracted = frame[y:y+h, x:x+w]
+
+        # Extract the alpha channel of the smallerImage
+        alpha_channel = smallerImage[:, :, 3]
+
+        # Resize the alpha channel to match the shape of smallerImage
+        alpha_channel_resized = cv2.resize(alpha_channel, (smallerImage.shape[1], smallerImage.shape[0]))
+
+        # Expand the dimensions of alpha_channel_resized to match smallerImage
+        alpha_channel_resized_expanded = np.repeat(np.expand_dims(alpha_channel_resized, axis=2), 3, axis=2)
+
+        # Resize region_extracted to match the shape of smallerImage
+        region_extracted_resized = cv2.resize(region_extracted, (smallerImage.shape[1], smallerImage.shape[0]))
+
+        # Perform alpha blending
+        blended_result = (smallerImage[:, :, :3] * alpha_channel_resized_expanded) + (region_extracted_resized * (1 - alpha_channel_resized_expanded))
+
+        # Ensure the result is in the range [0, 255] and cast it to uint8
+        blended_result = np.clip(blended_result, 0, 255).astype(np.uint8)
+
+        # Update the region in the frame with the blended result
+        frame[y:y+h, x:x+w] = blended_result
+
+
+
     #displaying frame
     cv2.imshow("Funky Cam", frame)
 
